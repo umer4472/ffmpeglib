@@ -1,0 +1,3 @@
+module HELLOWORLD-MASTER
+
+go 1.19
