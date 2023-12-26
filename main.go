@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
-	"github.com/umer4472/ffmpeglib/ffmpeglib"
+	"github.com/umer4472/ffmpeglib"
 )
 
 func main() {
-	inputFilePath := "/home/mslm/Downloads/.mov"
+	inputFilePath := "/home/mslm/Downloads/file_example_MOV_1920_2_2MB.mov"
 
 	converter := ffmpeglib.NewConverter(inputFilePath)
 
