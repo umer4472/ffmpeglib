@@ -8,29 +8,32 @@ import (
 	"strings"
 )
 
-// MP4toH264Converter represents the MP4 to H.264 converter.
-type MP4toH264Converter struct {
+// ConversionOptions represents the options for MP4 to H264 conversion.
+type ConversionOptions struct {
 	InputFile    string
 	VideoCodec   string
-	Preset       string
-	CRF          string
-	AudioCodec   string
-	Strict       string
 	AudioBitrate string
-	Threads      string
+}
+
+// MP4toH264Converter represents the MP4 to H264 converter.
+type MP4toH264Converter struct {
+	ConversionOptions
+	Preset     string
+	CRF        string
+	AudioCodec string
+	Strict     string
+	Threads    string
 }
 
 // NewConverter creates a new MP4toH264Converter instance.
-func NewConverter(inputFile string) *MP4toH264Converter {
+func NewConverter(options ConversionOptions) *MP4toH264Converter {
 	return &MP4toH264Converter{
-		InputFile:    inputFile,
-		VideoCodec:   "libx264",
-		Preset:       "fast",
-		CRF:          "23",
-		AudioCodec:   "aac",
-		Strict:       "experimental",
-		AudioBitrate: "192k",
-		Threads:      "4",
+		ConversionOptions: options,
+		Preset:            "fast",
+		CRF:               "23",
+		AudioCodec:        "aac",
+		Strict:            "experimental",
+		Threads:           "4",
 	}
 }
 
