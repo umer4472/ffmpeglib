@@ -2,6 +2,7 @@ package ffmpeglib
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -10,35 +11,42 @@ import (
 
 // ConversionOptions represents the options for MP4 to H264 conversion.
 type ConversionOptions struct {
-	InputFile    string
 	VideoCodec   string
 	AudioBitrate string
+	AudioCodec   string
 }
 
 // MP4toH264Converter represents the MP4 to H264 converter.
 type MP4toH264Converter struct {
 	ConversionOptions
-	Preset     string
-	CRF        string
-	AudioCodec string
-	Strict     string
-	Threads    string
+	InputFile string
+	Preset    string
+	CRF       string
+	Strict    string
+	Threads   string
 }
 
 // NewConverter creates a new MP4toH264Converter instance.
-func NewConverter(options ConversionOptions) *MP4toH264Converter {
+func NewConverter(inputFile string, options ConversionOptions) (*MP4toH264Converter, error) {
+
+	if _, err := os.Stat(inputFile); os.IsNotExist(err) {
+		return nil, fmt.Errorf("Input file does not exist: %s", inputFile)
+	}
+
 	return &MP4toH264Converter{
 		ConversionOptions: options,
+		InputFile:         inputFile,
 		Preset:            "fast",
 		CRF:               "23",
-		AudioCodec:        "aac",
 		Strict:            "experimental",
 		Threads:           "4",
-	}
+	}, nil
 }
 
 // Convert performs the MP4 to H.264 conversion and returns the output file name.
 func (c *MP4toH264Converter) Convert() (string, error) {
+	ffmpegPath := "/usr/bin/ffmpeg" // Set a default path
+
 	// Check if FFmpeg is available
 	if err := exec.Command("ffmpeg", "-version").Run(); err != nil {
 		return "", fmt.Errorf("FFmpeg is not installed. Please install FFmpeg before using this library.")
@@ -49,7 +57,7 @@ func (c *MP4toH264Converter) Convert() (string, error) {
 
 	// Run FFmpeg command for conversion
 	cmd := exec.Command(
-		"/usr/bin/ffmpeg",
+		ffmpegPath,
 		"-i", c.InputFile,
 		"-c:v", c.VideoCodec,
 		"-preset", c.Preset,
@@ -65,6 +73,7 @@ func (c *MP4toH264Converter) Convert() (string, error) {
 	cmd.Stderr = os.Stderr
 
 	if err := cmd.Run(); err != nil {
+		log.Printf("Error converting MP4 to H.264: %v", err)
 		return "", fmt.Errorf("Error converting MP4 to H.264: %v", err)
 	}
 

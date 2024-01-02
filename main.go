@@ -2,18 +2,25 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/umer4472/ffmpeglib"
 )
 
 func main() {
 	options := ffmpeglib.ConversionOptions{
-		InputFile:    "/home/mslm/Downloads/file_example_MOV_1920_2_2MB.mov",
 		VideoCodec:   "libx264",
 		AudioBitrate: "192k",
+		AudioCodec:   "aac",
 	}
 
-	converter := ffmpeglib.NewConverter(options)
+	inputFile := "/home/mslm/Downloads/file_example_MOV_1920_2_2MB.mov"
+
+	converter, err := ffmpeglib.NewConverter(inputFile, options)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	outputFile, err := converter.Convert()
 
@@ -21,5 +28,6 @@ func main() {
 		fmt.Printf("Error: %v\n", err)
 		return
 	}
+
 	fmt.Printf("Conversion completed. Output file: %s\n", outputFile)
 }
