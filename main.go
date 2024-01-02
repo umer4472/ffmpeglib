@@ -12,6 +12,8 @@ func main() {
 		VideoCodec:   "libx264",
 		AudioBitrate: "192k",
 		AudioCodec:   "aac",
+		Preset:       "fast", // compression ratio
+		CRF:          "23",   //video quality
 	}
 
 	inputFile := "/home/mslm/Downloads/file_example_MOV_1920_2_2MB.mov"

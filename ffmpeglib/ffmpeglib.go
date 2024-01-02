@@ -14,14 +14,14 @@ type ConversionOptions struct {
 	VideoCodec   string
 	AudioBitrate string
 	AudioCodec   string
+	Preset       string
+	CRF          string
 }
 
 // MP4toH264Converter represents the MP4 to H264 converter.
 type MP4toH264Converter struct {
 	ConversionOptions
 	InputFile string
-	Preset    string
-	CRF       string
 	Strict    string
 	Threads   string
 }
@@ -36,8 +36,6 @@ func NewConverter(inputFile string, options ConversionOptions) (*MP4toH264Conver
 	return &MP4toH264Converter{
 		ConversionOptions: options,
 		InputFile:         inputFile,
-		Preset:            "fast",
-		CRF:               "23",
 		Strict:            "experimental",
 		Threads:           "4",
 	}, nil
