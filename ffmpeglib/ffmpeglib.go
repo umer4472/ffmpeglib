@@ -18,22 +18,22 @@ type ConversionOptions struct {
 	CRF          string
 }
 
-// MP4toH264Converter represents the MP4 to H264 converter.
-type MP4toH264Converter struct {
+// Encoder represents the MP4 to H264 converter.
+type Encoder struct {
 	ConversionOptions
 	InputFile string
 	Strict    string
 	Threads   string
 }
 
-// NewConverter creates a new MP4toH264Converter instance.
-func NewConverter(inputFile string, options ConversionOptions) (*MP4toH264Converter, error) {
+// NewConverter creates a new Encoder instance.
+func NewConverter(inputFile string, options ConversionOptions) (*Encoder, error) {
 
 	if _, err := os.Stat(inputFile); os.IsNotExist(err) {
 		return nil, fmt.Errorf("Input file does not exist: %s", inputFile)
 	}
 
-	return &MP4toH264Converter{
+	return &Encoder{
 		ConversionOptions: options,
 		InputFile:         inputFile,
 		Strict:            "experimental",
@@ -42,7 +42,7 @@ func NewConverter(inputFile string, options ConversionOptions) (*MP4toH264Conver
 }
 
 // Convert performs the MP4 to H.264 conversion and returns the output file name.
-func (c *MP4toH264Converter) Convert() (string, error) {
+func (c *Encoder) Convert() (string, error) {
 	ffmpegPath := "/usr/bin/ffmpeg" // Set a default path
 
 	// Check if FFmpeg is available
